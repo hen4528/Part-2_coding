@@ -407,11 +407,11 @@ function drawHUD() {
   // HUD: show contextual small text in the top-left.
   fill(0);
   if (gameState === "shelf2") {
-    text(`Shelf 2 - click R to return`, 10, 16);
+    text(`Shelf 2 - click R to return`, 140, 16);
   } else if (gameState === "shelf1") {
-    text(`Shelf 1 - click R to return`, 10, 16);
+    text(`Shelf 1 - click R to return`, 140, 16);
   } else {
-    text(`Level 1— press R to return`, 10, 16);
+    text(`Level 1— press R to return`, 140, 16);
   }
 }
 
