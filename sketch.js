@@ -25,7 +25,6 @@ let levelsData;
 // Preloaded images from Assets/
 let images = {};
 
-
 // Products are stored separately from Level and positioned with
 // screen pixel coordinates. Define arrays for shelf screens here.
 let shelf1Products = [];
@@ -42,7 +41,7 @@ let correctSound = null;
 let incorrectSound = null;
 let correctClicked = new Set();
 // Simple game state: 'playing', 'shelf1', 'shelf2', 'win'
-let gameState = 'playing';
+let gameState = "playing";
 
 // Array of Level instances.
 let levels = [];
@@ -102,8 +101,8 @@ function preload() {
   });
 
   // Load simple audio using browser Audio objects (no p5.sound required)
-  correctSound = new Audio('Assets/Correct.mp3');
-  incorrectSound = new Audio('Assets/Incorrect.mp3');
+  correctSound = new Audio("Assets/Correct.mp3");
+  incorrectSound = new Audio("Assets/Incorrect.mp3");
 }
 
 function setup() {
@@ -118,29 +117,155 @@ function setup() {
   // Coordinates are screen pixels (relative to `width` and `height`),
   // not grid cells. Uncomment to enable.
   // Shelf 1 (top shelf screen):
-  shelf1Products.push({ name: 'Product 3', imageName: 'Product 3.png', x: 430, y: 280, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 7', imageName: 'Product 7.png', x: 600, y: 280, w:80, h:110 });
-  shelf1Products.push({ name: 'Cornstarch', imageName: 'Cornstarch.png', x: 790, y: 280, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 9', imageName: 'Product 9.png', x: 980, y: 280, w:80, h:110 });
+  shelf1Products.push({
+    name: "Product 3",
+    imageName: "Product 3.png",
+    x: 430,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 7",
+    imageName: "Product 7.png",
+    x: 600,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Cornstarch",
+    imageName: "Cornstarch.png",
+    x: 790,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 9",
+    imageName: "Product 9.png",
+    x: 980,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
 
- // Shelf 1 (bottom shelf screen):
-  shelf1Products.push({ name: 'Product 4', imageName: 'Product 4.png', x: 450, y:505, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 2', imageName: 'Product 2.png', x: 580, y: 505, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 14', imageName: 'Product 14.png', x: 710, y: 505, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 15', imageName: 'Product 15.png', x: 840, y: 505, w:80, h:110 });
-  shelf1Products.push({ name: 'Product 13', imageName: 'Product 13.png', x: 970, y: 505, w:80, h:110 });
-  
+  // Shelf 1 (bottom shelf screen):
+  shelf1Products.push({
+    name: "Product 4",
+    imageName: "Product 4.png",
+    x: 450,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 2",
+    imageName: "Product 2.png",
+    x: 580,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 14",
+    imageName: "Product 14.png",
+    x: 710,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 15",
+    imageName: "Product 15.png",
+    x: 840,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf1Products.push({
+    name: "Product 13",
+    imageName: "Product 13.png",
+    x: 970,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+
   // Shelf 2 (bottom shelf screen):
-  shelf2Products.push({ name: 'Pasta', imageName: 'Pasta.png', x: 430, y: 280, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 5', imageName: 'Product 5.png', x: 600, y: 280, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 12', imageName: 'Product 12.png', x: 790, y: 280, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 1', imageName: 'Product 1.png', x: 980, y: 280, w:80, h:110 });
+  shelf2Products.push({
+    name: "Pasta",
+    imageName: "Pasta.png",
+    x: 430,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 5",
+    imageName: "Product 5.png",
+    x: 600,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 12",
+    imageName: "Product 12.png",
+    x: 790,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 1",
+    imageName: "Product 1.png",
+    x: 980,
+    y: 280,
+    w: 80,
+    h: 110,
+  });
 
-  shelf2Products.push({ name: 'Product 6', imageName: 'Product 6.png', x: 450, y: 505, w:80, h:110 });
-  shelf2Products.push({ name: 'Icecream', imageName: 'Icecream.png', x: 580, y: 505, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 10', imageName: 'Product 10.png', x: 710, y: 505, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 11', imageName: 'Product 11.png', x: 840, y: 505, w:80, h:110 });
-  shelf2Products.push({ name: 'Product 8', imageName: 'Product 8.png', x: 970, y: 505, w:80, h:110 });
+  shelf2Products.push({
+    name: "Product 6",
+    imageName: "Product 6.png",
+    x: 450,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Icecream",
+    imageName: "Icecream.png",
+    x: 580,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 10",
+    imageName: "Product 10.png",
+    x: 710,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 11",
+    imageName: "Product 11.png",
+    x: 840,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
+  shelf2Products.push({
+    name: "Product 8",
+    imageName: "Product 8.png",
+    x: 970,
+    y: 505,
+    w: 80,
+    h: 110,
+  });
 
   // Create a player.
   player = new Player(TS);
@@ -186,8 +311,8 @@ function setup() {
 function draw() {
   background(240);
   // If win state, draw only the win image and return early
-  if (gameState === 'win') {
-    const winImg = images['Win Screen.png'];
+  if (gameState === "win") {
+    const winImg = images["Win Screen.png"];
     if (winImg) {
       push();
       imageMode(CENTER);
@@ -204,7 +329,7 @@ function draw() {
   const activeLevel = levels[li];
 
   // Draw based only on gameState
-  if (gameState === 'playing') {
+  if (gameState === "playing") {
     const level = activeLevel;
     const lw = level.pixelWidth();
     const lh = level.pixelHeight();
@@ -218,7 +343,7 @@ function draw() {
     level.draw();
     player.draw();
     pop();
-  } else if (gameState === 'shelf1') {
+  } else if (gameState === "shelf1") {
     // show the current level but hide the player and show shelf1 products
     const level = activeLevel;
     const lw = level.pixelWidth();
@@ -243,7 +368,7 @@ function draw() {
       textAlign(LEFT, BASELINE);
     }
     drawShelfProducts(1);
-  } else if (gameState === 'shelf2') {
+  } else if (gameState === "shelf2") {
     // show the extra level view (from Level.extraGrid) and shelf2 products
     if (!extraLevel) {
       extraLevel = new Level(copyGrid(Level.extraGrid), TS);
@@ -265,16 +390,14 @@ function draw() {
   }
 
   drawHUD();
-
-  
 }
 
 function drawHUD() {
   // HUD: show contextual small text in the top-left.
   fill(0);
-  if (gameState === 'shelf2') {
+  if (gameState === "shelf2") {
     text(`Shelf 2 - click R to return`, 10, 16);
-  } else if (gameState === 'shelf1') {
+  } else if (gameState === "shelf1") {
     text(`Shelf 1 - click R to return`, 10, 16);
   } else {
     text(`Level 1— press R to return`, 10, 16);
@@ -283,9 +406,9 @@ function drawHUD() {
 
 function keyPressed() {
   // Win restart: R or Space resets game to 'playing' and resets systems
-  if (gameState === 'win' && (key === 'r' || key === 'R' || keyCode === 32)) {
+  if (gameState === "win" && (key === "r" || key === "R" || keyCode === 32)) {
     correctClicked.clear();
-    gameState = 'playing';
+    gameState = "playing";
     mainScreenText = null;
     // reset hint system
     hintCount = 0;
@@ -295,7 +418,9 @@ function keyPressed() {
       hintTimer = null;
     }
     if (hintButton) {
-      try { hintButton.removeAttribute && hintButton.removeAttribute('disabled'); } catch (e) {}
+      try {
+        hintButton.removeAttribute && hintButton.removeAttribute("disabled");
+      } catch (e) {}
     }
     // reset navigation state
     prevState = null;
@@ -310,8 +435,8 @@ function keyPressed() {
   }
 
   // Return from shelf views: R returns to previous gameplay state
-  if (gameState === 'shelf2' && (key === 'r' || key === 'R')) {
-    gameState = 'playing';
+  if (gameState === "shelf2" && (key === "r" || key === "R")) {
+    gameState = "playing";
     if (returnState) {
       loadLevel(returnState.li);
       player.setCell(returnState.r, returnState.c);
@@ -320,8 +445,8 @@ function keyPressed() {
     return;
   }
 
-  if (gameState === 'shelf1' && (key === 'r' || key === 'R')) {
-    gameState = 'playing';
+  if (gameState === "shelf1" && (key === "r" || key === "R")) {
+    gameState = "playing";
     if (prevState) {
       const ps = prevState;
       prevState = null;
@@ -332,15 +457,15 @@ function keyPressed() {
   }
 
   // Block movement and other keys unless playing
-  if (gameState !== 'playing') return;
+  if (gameState !== "playing") return;
 
   /* Convert key presses into a movement direction. (WASD + arrows) */
   let dr = 0;
   let dc = 0;
-  if (keyCode === LEFT_ARROW || key === 'a' || key === 'A') dc = -1;
-  else if (keyCode === RIGHT_ARROW || key === 'd' || key === 'D') dc = 1;
-  else if (keyCode === UP_ARROW || key === 'w' || key === 'W') dr = -1;
-  else if (keyCode === DOWN_ARROW || key === 's' || key === 'S') dr = 1;
+  if (keyCode === LEFT_ARROW || key === "a" || key === "A") dc = -1;
+  else if (keyCode === RIGHT_ARROW || key === "d" || key === "D") dc = 1;
+  else if (keyCode === UP_ARROW || key === "w" || key === "W") dr = -1;
+  else if (keyCode === DOWN_ARROW || key === "s" || key === "S") dr = 1;
   else return; // not a movement key
 
   const activeLevel = levels[li];
@@ -352,12 +477,12 @@ function keyPressed() {
   if (t === 3) {
     prevState = { li, r: player.r, c: player.c };
     nextLevel();
-    gameState = 'shelf1';
+    gameState = "shelf1";
   } else if (t === 4) {
     // stepping on 4: show shelf2 (record return position)
     returnState = { li, r: player.r, c: player.c };
     // don't create/move into extraLevel; shelf2 is a static product view
-    gameState = 'shelf2';
+    gameState = "shelf2";
   }
 }
 
@@ -447,6 +572,30 @@ function drawShelfProducts(shelfNumber) {
         pop();
       }
     }
+
+    // Hover stroke: draw a 7px black outline when the mouse is over the product
+    {
+      const bw = p.w || 80;
+      const bh = p.h || 110;
+      const left = x - bw / 2;
+      const right = x + bw / 2;
+      const top = y - bh / 2;
+      const bottom = y + bh / 2;
+      if (
+        mouseX >= left &&
+        mouseX <= right &&
+        mouseY >= top &&
+        mouseY <= bottom
+      ) {
+        push();
+        noFill();
+        stroke(0);
+        strokeWeight(5);
+        rectMode(CENTER);
+        rect(x, y, bw + 6, bh + 6);
+        pop();
+      }
+    }
   }
   pop();
 }
@@ -454,8 +603,8 @@ function drawShelfProducts(shelfNumber) {
 function mousePressed() {
   // Only allow clicking when a shelf view is active (either shelf1 or shelf2)
   let shelfNumber = null;
-  if (gameState === 'shelf1') shelfNumber = 1;
-  else if (gameState === 'shelf2') shelfNumber = 2;
+  if (gameState === "shelf1") shelfNumber = 1;
+  else if (gameState === "shelf2") shelfNumber = 2;
   else return;
 
   const list = shelfNumber === 1 ? shelf1Products : shelf2Products;
@@ -470,26 +619,38 @@ function mousePressed() {
     const top = p.y - h / 2;
     const bottom = p.y + h / 2;
 
-    if (mouseX >= left && mouseX <= right && mouseY >= top && mouseY <= bottom) {
+    if (
+      mouseX >= left &&
+      mouseX <= right &&
+      mouseY >= top &&
+      mouseY <= bottom
+    ) {
       const targets = ["Cornstarch", "Pasta", "Icecream"];
       if (targets.includes(p.name)) {
         // If not already clicked, count it and play correct sound
         if (!correctClicked.has(p.name)) {
           correctClicked.add(p.name);
-          try { correctSound.currentTime = 0; } catch (e) {}
+          try {
+            correctSound.currentTime = 0;
+          } catch (e) {}
           correctSound.play();
         }
       } else {
-        try { incorrectSound.currentTime = 0; } catch (e) {}
+        try {
+          incorrectSound.currentTime = 0;
+        } catch (e) {}
         incorrectSound.play();
       }
 
       // If all three correct items clicked, show win screen once
-      if (correctClicked.size === 3 && gameState !== 'win') {
-        gameState = 'win';
+      if (correctClicked.size === 3 && gameState !== "win") {
+        gameState = "win";
         mainScreenText = "You win!";
         // disable hint button if present
-        if (hintButton) try { hintButton.attribute("disabled", "true"); } catch (e) {}
+        if (hintButton)
+          try {
+            hintButton.attribute("disabled", "true");
+          } catch (e) {}
       }
 
       // Stop after first matching product
