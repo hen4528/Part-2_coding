@@ -41,7 +41,8 @@ let correctSound = null;
 let incorrectSound = null;
 let correctClicked = new Set();
 // Simple game state: 'playing', 'shelf1', 'shelf2', 'win'
-let gameState = "playing";
+// Start on the title/instructions screen; press Space to begin.
+let gameState = "title";
 
 // Array of Level instances.
 let levels = [];
@@ -310,6 +311,16 @@ function setup() {
 
 function draw() {
   background(240);
+  // Title / instructions screen shown before gameplay
+  if (gameState === "title") {
+    drawTitleScreen();
+    drawInstructions();
+    fill(0);
+    textSize(20);
+    textAlign(CENTER, TOP);
+    text("Press SPACE to begin", width / 2, height * 0.8);
+    return;
+  }
   // If win state, draw only the win image and return early
   if (gameState === "win") {
     const winImg = images["Win Screen.png"];
@@ -405,6 +416,25 @@ function drawHUD() {
 }
 
 function keyPressed() {
+  // If we're on the title screen, space starts the game
+  if (gameState === "title" && (key === " " || keyCode === 32)) {
+    gameState = "playing";
+    mainScreenText = null;
+    hintCount = 0;
+    hintActive = false;
+    if (hintTimer) {
+      clearTimeout(hintTimer);
+      hintTimer = null;
+    }
+    correctClicked.clear();
+    // Ensure first level is loaded and player placed
+    loadLevel(0);
+    const lvl = levels[li];
+    if (lvl && lvl.start) player.setCell(lvl.start.r, lvl.start.c);
+    else player.setCell(1, 1);
+    player.movedAt = 0;
+    return;
+  }
   // Win restart: R or Space resets game to 'playing' and resets systems
   if (gameState === "win" && (key === "r" || key === "R" || keyCode === 32)) {
     correctClicked.clear();
@@ -573,7 +603,7 @@ function drawShelfProducts(shelfNumber) {
       }
     }
 
-    // Hover stroke: draw a 7px black outline when the mouse is over the product
+    // Hover stroke: draw a 10px black outline when the mouse is over the product
     {
       const bw = p.w || 80;
       const bh = p.h || 110;
@@ -590,13 +620,101 @@ function drawShelfProducts(shelfNumber) {
         push();
         noFill();
         stroke(0);
-        strokeWeight(5);
+        strokeWeight(10);
         rectMode(CENTER);
         rect(x, y, bw + 6, bh + 6);
         pop();
       }
     }
   }
+  pop();
+}
+
+// Draw the title banner and a simple start button (visual only).
+function drawTitleScreen() {
+  // Title
+  fill("black");
+  noStroke();
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  textStyle(BOLD);
+}
+
+function drawInstructions() {
+  // Instructions box
+  const boxW = Math.min(850, width * 0.9);
+  const boxH = Math.min(420, height * 0.7);
+  const boxX = width / 2;
+  const boxY = height * 0.5;
+
+  push();
+  rectMode(CENTER);
+  fill("white");
+  noStroke();
+  rect(boxX, boxY - 20, boxW, boxH, 8);
+
+  // Title
+  fill("black");
+  noStroke();
+  textSize(24);
+  textAlign(CENTER, TOP);
+  textStyle(BOLD);
+  text(
+    "Welcome, Personal Shopper 🛍️ to Elite Employee 🌟",
+    boxX,
+    boxY - boxH / 2 + 20,
+    boxW,
+  );
+
+  // Subtitle
+  textSize(14);
+  textStyle(NORMAL);
+  text(
+    "You are up for a promotion… if you can accurately collect all required items within 3 minutes ⏱️",
+    boxX,
+    boxY - boxH / 2 + 60,
+    boxW,
+  );
+
+  // Objective section
+  textSize(16);
+  textStyle(BOLD);
+  text("🎯 Objective", boxX, boxY - boxH / 2 + 110, boxW);
+  textSize(14);
+  textStyle(NORMAL);
+  text(
+    "Collect the exact number of items displayed in the top center of the screen.",
+    boxX,
+    boxY - boxH / 2 + 135,
+    boxW,
+  );
+
+  // Controls section
+  textSize(16);
+  textStyle(BOLD);
+  text("🎮 Controls", boxX, boxY - boxH / 2 + 180, boxW);
+  textSize(14);
+  textStyle(NORMAL);
+  text(
+    "Move: Use the arrow keys ⬆️⬇️⬅️➡️\nSelect an item: Click with your mouse 🖱️",
+    boxX,
+    boxY - boxH / 2 + 205,
+    boxW,
+  );
+
+  // Hints section
+  textSize(16);
+  textStyle(BOLD);
+  text("💡 Hints", boxX, boxY - boxH / 2 + 260, boxW);
+  textSize(14);
+  textStyle(NORMAL);
+  text(
+    "You have two hints per level 🔎\nUsing a hint will highlight the item you need, but be careful! Each hint reduces your remaining time.",
+    boxX,
+    boxY - boxH / 2 + 285,
+    boxW,
+  );
+
   pop();
 }
 
